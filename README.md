@@ -1,64 +1,172 @@
-# SDN Gateway & Face Recognition Security System
+# BioNet SDN Gateway & Face Recognition Security System
 
 ## Project Overview
 
-This project combines Software-Defined Networking (SDN) with an autonomous facial recognition security layer to provide secure and intelligent access control.
+BioNet is a Python-based security gateway prototype that combines facial recognition with network communication for secure user authentication.
 
-The system is designed to monitor and control network access while using facial recognition technology to authenticate authorized users. The facial recognition component uses the Local Binary Pattern Histogram (LBPH) algorithm to identify registered users.
+The system uses OpenCV's LBPH (Local Binary Pattern Histogram) face recognition algorithm to verify a user's identity. After successful verification, the application sends an authentication message to the controller through a TCP socket connection.
 
-## Key Features
+## Features
 
-- Software-Defined Networking (SDN) based network control
-- Facial recognition-based authentication
+- Face recognition-based authentication
 - LBPH face recognition algorithm
-- Secure access control
-- Client-server communication
-- Automated authentication workflow
-- Network security monitoring
-- Python-based implementation
+- Camera-based face scanning
+- Image upload for face verification
+- Streamlit web interface
+- TCP socket communication
+- Authentication-based gateway access
+- Face recognition model training
+- Custom face dataset support
 
 ## Technologies Used
 
 - Python
-- Software-Defined Networking (SDN)
+- Streamlit
 - OpenCV
+- OpenCV Contrib
+- NumPy
 - LBPH Face Recognition
-- Socket Programming
-- Computer Vision
+- TCP Socket Programming
 
-## System Architecture
+## Project Files
 
-The system consists of multiple components working together:
+- `app.py` - Main Streamlit application for face recognition and authentication.
+- `train.py` - Trains the LBPH face recognition model using images from the dataset.
+- `controller.py` - Runs the authentication controller and listens for authentication messages.
+- `model.yml` - Trained LBPH face recognition model.
+- `requirements.txt` - Contains the required Python libraries.
+- `dataset/` - Contains the face images used to train the recognition model.
 
-1. **Face Recognition Module**
-   - Captures and processes facial data.
-   - Uses the LBPH algorithm to recognize registered users.
+## How the System Works
 
-2. **Authentication Layer**
-   - Verifies the identity of the user.
-   - Determines whether access should be granted or denied.
+1. The user starts the controller.
+2. The user checks the computer's IP address using `ipconfig`.
+3. The Streamlit application is started.
+4. The user selects Camera or Upload mode.
+5. The system detects and recognizes the user's face.
+6. If the identity is successfully verified, the user can click the "OPEN GATE" button.
+7. The application sends `AUTH_SUCCESS` to the controller through a TCP socket.
+8. The controller receives the authentication message and indicates that the gateway is opened.
 
-3. **SDN Gateway**
-   - Acts as a controlled entry point for network communication.
-   - Manages access based on authentication results.
+## Installation
 
-4. **Controller**
-   - Handles communication between the client and gateway.
-   - Processes authentication status and network access requests.
+### 1. Clone the Repository
 
-## Project Workflow
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL
+```
 
-1. User attempts to access the protected system.
-2. The facial recognition module captures the user's face.
-3. The LBPH algorithm compares the captured face with registered facial data.
-4. The system determines whether the user is authorized.
-5. Authentication status is communicated to the network gateway.
-6. Authorized users are granted access.
+### 2. Open the Project Folder
 
-## Project Structure
-SDN-Gateway-Face-Recognition-Security-System/
-│
-├── Python source files
-├── Face recognition module
-├── SDN gateway components
-├── Controller co
+```bash
+cd SDN-Gateway-Face-Recognition-Security-System
+```
+
+### 3. Install Required Libraries
+
+```bash
+pip install -r requirements.txt
+```
+
+## How to Run the Project
+
+### Step 1: Find the IP Address
+
+Open Command Prompt and run:
+
+```bash
+ipconfig
+```
+
+Find the IPv4 address of the computer running the controller.
+
+The IP address is used in `app.py` for the controller connection.
+
+The current configuration is:
+
+```python
+client.connect(('192.168.1.6', 9999))
+```
+
+Change `192.168.1.6` to the IPv4 address of the computer running `controller.py`.
+
+### Step 2: Start the Controller
+
+Open Command Prompt or Terminal in the project folder and run:
+
+```bash
+python controller.py
+```
+
+The controller will start listening for authentication requests on port `9999`.
+
+### Step 3: Start the Streamlit Application
+
+Open another Command Prompt or Terminal window in the project folder and run:
+
+```bash
+python -m streamlit run app.py --server.address 0.0.0.0
+```
+
+The Streamlit application will start and provide a local web address.
+
+Open the provided address in a web browser.
+
+## Training the Face Recognition Model
+
+If a new face dataset is used, place the images inside the `dataset` folder.
+
+Then run:
+
+```bash
+python train.py
+```
+
+This will create or update:
+
+```text
+model.yml
+```
+
+The generated `model.yml` file is used by `app.py` for face recognition.
+
+## Important Note
+
+The controller and Streamlit application should be running at the same time.
+
+The controller must be started first:
+
+```bash
+python controller.py
+```
+
+Then start the Streamlit application:
+
+```bash
+python -m streamlit run app.py --server.address 0.0.0.0
+```
+
+Make sure the IP address configured in `app.py` matches the IPv4 address of the computer running the controller.
+
+## Security Considerations
+
+This project is an educational prototype demonstrating facial recognition and network authentication concepts.
+
+For a production system, additional security features such as encrypted communication, secure authentication, access control, and protected credentials should be implemented.
+
+## Future Improvements
+
+- Integration with a real SDN controller
+- Secure encrypted network communication
+- Multi-user face recognition
+- User registration system
+- Authentication logging
+- Role-based access control
+- Real-time network monitoring
+- Improved face recognition accuracy
+
+## Author
+
+**Rizwa Hassan**
+
+Computer Science Student
