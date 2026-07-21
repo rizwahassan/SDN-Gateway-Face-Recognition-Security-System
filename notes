@@ -1,0 +1,5 @@
+ipconfig
+python controller.py
+python -m streamlit run app.py --server.address 0.0.0.0
+..cmd
+chkdsk
